@@ -4,7 +4,7 @@ Capstone project for KnowledgeHut. The task is to classify images in the classes
 # Usage
 
 All files beside of the kaggle_notebook.ipynb were used to train the network locally. Unfortunately this did not work out as expected as my GPU is too small.
-These files are more modular and can be run on any computer if wanted.
+These files are more modular and can be run on any computer if wanted. It uses the config.yml file for the most important parameters.
 
 The main work was done in the kaggle_notebook.ipynb. As the name already suggests it was done using the kaggle environment where you cannot modularize your code.
 Hence all code is available in this notebook. Just run it from top to bottom. But it will only work in a kaggle environment probably.
