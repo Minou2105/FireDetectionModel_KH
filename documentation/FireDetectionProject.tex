@@ -3,6 +3,7 @@
 \usepackage{float}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{hyperref}
 \usepackage[export]{adjustbox}
 
 
@@ -88,9 +89,36 @@ For some of the models I started playing with Data Augmentation trying to get ri
 I trained in total 14 models trying different things to increase the accuracy of the models.\\
 First I started with a rather big network having few layers only. Then in V2 I added the Rescaling and BatchNormalization layers which already increased the test accuracy. I wanted to test how the model behaves when I add some additional convolutional layers (V3). The accuracy did decrease on the test set. As compensation for the additional layers I tried to include Dropout layers with two different configurations (V4 + V5). This increased the networks test accuracy but was not much better than V2 with less convolutional layers. So I deleted the additional layer in V6, which gave me my best overall result with 0.976\% test accuracy. Still I had the feeling the model was overfitting as the training accuracy was extremly high. The test accuracy was of course as well high, but I had just this feeling as if the network was remembering the images as the validation accuracy was a little stagnating.\\
 So I added data augmentation in V7 to see whether this would help a bit. And indeed the validation accuracy and train accuracy looked a little better as they were both increasing with the number of epochs. But unfortunately the overall training and testing accuracy went down. Model V8 can be omitted as there were no real new insights.\\
-I removed the Data Augmentation again and got nearly competitive results with less filters in V9 although the test accuracy went down by 0.006\%. Still I wanted to see whether I could create a less complex model with the same accuracy. I decreased the number of filters in V10 and V11 and lost one percentage point of test accuracy. Hence I needed more filters again, but I did not want to increase the number of parameters again. So I added an additional convolutional layer in V12 which increased test accuracy again but could not match up with my "best" model until now. V13 and V14 were just tests to see how much i would need to decrease the number of parameters until I would be underfitting. Although I did not reach that goal I could see that the training accuracy did go down and I was unable to reach the good results from before.
+I removed the Data Augmentation again and got nearly competitive results with less filters in V9 although the test accuracy went down by 0.006\%. Still I wanted to see whether I could create a less complex model with the same accuracy. I decreased the number of filters in V10 and V11 and lost one percentage point of test accuracy. Hence I needed more filters again, but I did not want to increase the number of parameters again. So I added an additional convolutional layer in V12 which increased test accuracy again but could not match up with my "best" model until now. V13 and V14 were just tests to see how much i would need to decrease the number of parameters until I would be underfitting. Although I did not reach that goal I could see that the training accuracy did go down and I was unable to reach the good results from before. Please view here my configurations I have been using:\\
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{"../visualizations/models/Model1-5_acc.jpg"}
+	\caption{Version 1 to 5 of my trials with the fire detection classifier}}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{"../visualizations/models/Model6-11_acc.jpg"}
+	\caption{Version 6 to 11 of my trials with the fire detection classifier}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{"../visualizations/models/Model12-14_acc.jpg"}
+	\caption{Version 12 to 14 of my trials with the fire detection classifier}
+\end{figure}
+As a last trial I tried to use ResNet50 pretrained on imagenet data from keras for this use case. Training took much longer but also gave a quite nice result of 97.5\% accuracy.\\
+If interested you can find plots showing accuracy and loss development over each epoch in the folder results.
 \section{Best Results}
+The overall best result was given my Version 6. It slightly beats the ResNet results. Although I have to add that ResNet50 was not fine tuned for this use case and could not show its full potential.\\
+I also want to mention that Version 12 nearly gave the same result by only having roughly 1/12 of the number of parameters that Version 6 had. So if size is an issue this could be an alternative, but since we are talking about a use case where safety and hence accuracy are being more important, we would probably select the better and bigger network.\\
 \section{Deployment}
+Deployment was another big issue. I started using flask to create my deployment program. Soon I discovered that I was unable to read the models which were created by the endpoint callbacks. Unfortunately I could not figure out why so I took the only model which was actually loadable because I just stored the weights for it: ResNet50.\\
+Locally the program does work, although the first prediction takes quite long, since it needs to load the model and the weights first. Afterwards predictions are basically done in real time. I have to mention here that my own GPU was probably involved here.\\
+I searched for different platforms where I could host my application for free but was unsucessful. I tried PythonAnywhere. The link is the following:\\ \href{http://minou2105.pythonanywhere.com/}{Link to PythonAnywhere}\\
+After selecting the image the processing takes forever and shows an error after a while. My guess is that the computing power is just not large enough.\\
+I also tried Vercel, but it does not offer any easy way to store files. I need this functionality in the program since I need to store the image locally first before I can open it for TensorFlow.\\
+So I took a small video showing the local deployment process working. I hope this is sufficient. The video can be found in the deployment folder.
 \section{Further Steps}
+To further increase the accuracy of the model my first try would be to finetune ResNet50 since I believe with finetuning we would get even better results.\\
+Of course one could try different architectures linke pointwise convolutions or different hyperparameter, e.g. setting the learning rate, changing the optimizer, changing the activations function and so on. There are quite a lot possibilities one could try out.
 
 \end{document}          
