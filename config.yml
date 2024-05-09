@@ -1,0 +1,12 @@
+input:
+  image_input_path: "../data/FOREST_FIRE_SMOKE_AND_NON_FIRE_DATASET"
+  image_size: [128,128]
+  batch_size: 8
+  validation_split: 0.2
+  use_resnet: False
+  
+
+output:
+  result_path: "../results"
+  viz_path: "../visualizations"
+  logging_path: "../logging"
