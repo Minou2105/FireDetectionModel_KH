@@ -12,7 +12,7 @@ model.built= True
 model.load_weights('../results/ResNetModel/ResnetV1_model-003-0.975870-0.969558.keras')
 #model.load_weights("/home/Minou2105/mysite/ResnetV1_model-003-0.975870-0.969558.keras")
 
-UPLOAD_FOLDER = "upload"
+UPLOAD_FOLDER = "/tmp"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 @app.route('/')
